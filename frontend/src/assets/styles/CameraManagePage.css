@@ -1,0 +1,39 @@
+.tablerow {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+}
+
+.tablerow th {
+    text-align: center;
+    background-color: #e0f7fa;
+    color: #006064;
+    padding: 14px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+}
+
+.tablerow td {
+    text-align: center;
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Hover row effect */
+.tablerow tr:hover td {
+    background-color: #f1f8e9;
+}
+
+/* Table container spacing */
+.table-container {
+    margin: 20px auto;
+    width: 95%;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}

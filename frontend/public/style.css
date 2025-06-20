@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #35424a;
+    color: #ffffff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.search-bar {
+    margin: 20px 0;
+}
+
+.camera-list {
+    list-style: none;
+    padding: 0;
+}
+
+.camera-list li {
+    background: #ffffff;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.camera-list li:hover {
+    background: #e2e2e2;
+}
+
+.camera-feed {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.camera-feed video {
+    max-width: 100%;
+    border: 2px solid #35424a;
+    border-radius: 5px;
+}

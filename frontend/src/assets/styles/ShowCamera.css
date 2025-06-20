@@ -1,0 +1,134 @@
+.show-camera-container {
+    padding: 24px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+}
+
+.show-camera-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.camera-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.back-button {
+    text-transform: none;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+.camera-video-card {
+    padding: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.camera-video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    /* 16:9 aspect ratio */
+    background: #000;
+    /* Đổi từ xám sang đen để giảm "mờ" */
+    overflow: hidden;
+}
+
+.camera-video-container video,
+.camera-video-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+.camera-info-section {
+    padding: 24px;
+    background: #fff;
+}
+
+.camera-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.camera-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border-left: 4px solid #e0e0e0;
+    padding-left: 12px;
+}
+
+.camera-info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.camera-info-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.camera-info-label {
+    font-size: 14px;
+    color: #777;
+}
+
+.camera-info-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.camera-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 16px;
+    margin-top: 4px;
+    font-size: 14px;
+    width: fit-content;
+}
+
+.camera-status-badge.active {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.camera-status-badge.inactive {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.camera-status-badge.maintenance {
+    background-color: #fff8e1;
+    color: #f9a825;
+}
+
+/* Trạng thái tải */
+.loading-container,
+.error-container,
+.not-found-container {
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

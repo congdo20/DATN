@@ -1,0 +1,123 @@
+/* .vehicle-search-container {
+    font-size: 20px;
+    padding: 20px;
+} */
+
+.vehicle-search-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.vehicle-search-container h1 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-bar select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-size: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-results h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.person-list {
+    list-style: none;
+    padding: 0;
+}
+
+.person-list li {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.person-list li.selected {
+    background-color: #e0f7fa;
+}
+
+.person-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.person-info img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.person-info .details h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.person-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.person-details h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.person-details .detail-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.person-details .detail-card .large-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.person-details .detail-card p {
+    margin-bottom: 8px;
+}

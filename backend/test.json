@@ -1,0 +1,52 @@
+[
+    {
+      "ThoiGian": "2025-06-04T12:51:11",
+      "ViTri": "Ngã tư Hàng Bài - Tràng Tiền",
+      "DuongDanHinhAnh": "/violations/violation1.jpg",
+      "IdPhatHien": 1,
+      "vipham": {
+        "TrangThai": "Chua Xu Ly",
+        "IdViPham": 1,
+        "danhmuc": {
+          "LoaiViPham": "Vượt đèn đỏ",
+          "MucPhat": 500000,
+          "IdDanhMuc": 1
+        },
+        "anh": {
+          "ThoiGian": "2025-06-04T12:51:11",
+          "DuongDan": "/images/camera1_20240115_1005.jpg",
+          "KichThuoc": 1.1,
+          "IdAnh": 2,
+          "camera": {
+            "IpCamera": "127.0.0.1:8001",
+            "ViTriLapDat": "Ngã tư Hàng Bài - Tràng Tiền",
+            "TrangThaiCamera": "Hoat Dong",
+            "NgayLapDat": "2024-01-15",
+            "IdCamera": 1,
+            "khuvuc": {
+              "TenKhuVuc": "Hoàn Kiếm",
+              "IdKhuVuc": 1
+            }
+          }
+        },
+        "phuongtien": {
+          "ChuSoHuu": "Nguyễn Văn A",
+          "BienSo": "29A-12345",
+          "KieuXe": "Xe máy",
+          "MauSac": "Đỏ",
+          "IdPhuongTien": 1
+        }
+      },
+      "camera": {
+        "IpCamera": "127.0.0.1:8001",
+        "ViTriLapDat": "Ngã tư Hàng Bài - Tràng Tiền",
+        "TrangThaiCamera": "Hoat Dong",
+        "NgayLapDat": "2024-01-15",
+        "IdCamera": 1,
+        "khuvuc": {
+          "TenKhuVuc": "Hoàn Kiếm",
+          "IdKhuVuc": 1
+        }
+      }
+    }
+]

@@ -1,0 +1,347 @@
+/* .login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+} */
+
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.login-paper {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 20px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  position: relative;
+  animation: slideInUp 0.8s ease-out;
+  max-width: 450px !important;
+  width: 100%;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+  animation: fadeIn 1s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.login-avatar {
+  background: linear-gradient(135deg, #667eea 0%, #084bd1 100%) !important;
+  width: 70px !important;
+  height: 70px !important;
+  margin: 0 auto 20px !important;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+  }
+  100% {
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  }
+}
+
+.login-title {
+  color: #2c3e50 !important;
+  font-weight: 700 !important;
+  font-size: 2rem !important;
+  margin-bottom: 10px !important;
+  background: linear-gradient(135deg, #667eea 0%, #084bd1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-subtitle {
+  color: #7f8c8d !important;
+  font-size: 1rem !important;
+  margin-bottom: 30px !important;
+}
+
+.custom-textfield {
+  margin-bottom: 20px;
+}
+
+.custom-textfield .MuiOutlinedInput-root {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.custom-textfield .MuiOutlinedInput-root:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.custom-textfield .MuiOutlinedInput-root.Mui-focused {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.custom-textfield .MuiOutlinedInput-notchedOutline {
+  border: 2px solid #e1e8ed;
+  transition: all 0.3s ease;
+}
+
+.custom-textfield .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #667eea;
+}
+
+.custom-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #667eea;
+  border-width: 2px;
+}
+
+.custom-textfield .MuiInputLabel-root {
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.custom-textfield .MuiInputLabel-root.Mui-focused {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.login-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 12px !important;
+  height: 50px !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.3s ease !important;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.login-button:hover::before {
+  left: 100%;
+}
+
+.login-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4) !important;
+}
+
+.login-button:disabled {
+  background: #bdc3c7 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.signup-link {
+  color: #667eea !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+}
+
+.signup-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transition: width 0.3s ease;
+}
+
+.signup-link:hover::after {
+  width: 100%;
+}
+
+.signup-link:hover {
+  color: #764ba2 !important;
+}
+
+.error-alert {
+  border-radius: 12px !important;
+  margin-bottom: 20px !important;
+  border: none !important;
+  background: rgba(231, 76, 60, 0.1) !important;
+  color: #c0392b !important;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.success-alert {
+  border-radius: 12px !important;
+  margin-bottom: 20px !important;
+  border: none !important;
+  background: rgba(46, 204, 113, 0.1) !important;
+  color: #27ae60 !important;
+  animation: bounce 0.6s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 60%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  80% { transform: translateY(-5px); }
+}
+
+.field-icon {
+  color: #667eea !important;
+}
+
+.loading-spinner {
+  color: #667eea !important;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 10px;
+  }
+  
+  .login-paper {
+    margin: 10px;
+    padding: 30px 20px !important;
+  }
+  
+  .login-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .login-button {
+    height: 45px !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* Animation for form fields */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-field-animation {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.form-field-animation:nth-child(1) { animation-delay: 0.1s; }
+.form-field-animation:nth-child(2) { animation-delay: 0.2s; }
+.form-field-animation:nth-child(3) { animation-delay: 0.3s; }
+
+/* Loading state improvements */
+.MuiCircularProgress-root {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Focus improvements */
+.custom-textfield .MuiOutlinedInput-root:focus-within {
+  transform: scale(1.02);
+}
+
+/* Hover effects for icons */
+.field-icon {
+  transition: all 0.3s ease;
+}
+
+.field-icon:hover {
+  transform: scale(1.1);
+  color: #764ba2 !important;
+}
+
+/* Welcome message animation */
+.welcome-message {
+  animation: slideInDown 0.8s ease-out 0.3s both;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form container animation */
+.form-container {
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+} 

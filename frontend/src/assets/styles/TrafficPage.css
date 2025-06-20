@@ -1,0 +1,164 @@
+/* traffic-status-container chung */
+.traffic-status-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.traffic-status-container h1,
+.traffic-status-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Map specific styles */
+.map-container {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Ensure map doesn't overflow its container */
+}
+
+/* Custom marker styles */
+.custom-marker-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid white;
+    /* Border for visibility */
+}
+
+.marker-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    /* Default color, overridden by color classes */
+    /* Animation or other effects can be added here */
+}
+
+/* Color classes for markers and cards */
+.custom-marker-icon.severe .marker-dot,
+.traffic-card.severe {
+    background-color: #e74c3c;
+    /* Đỏ - Nghiêm trọng/Đông đúc/Ùn tắc nặng */
+}
+
+.custom-marker-icon.moderate .marker-dot,
+.traffic-card.moderate {
+    background-color: #f39c12;
+    /* Cam - Ùn tắc/Trung bình/Nhẹ */
+}
+
+.custom-marker-icon.normal .marker-dot,
+.traffic-card.normal {
+    background-color: #2ecc71;
+    /* Xanh lá - Bình thường/Thông thoáng */
+}
+
+/* Popup content styling */
+.popup-content {
+    padding: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.popup-content h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.popup-content p {
+    margin-bottom: 3px;
+}
+
+.popup-content.severe h4,
+.popup-content.severe p {
+    color: #c0392b;
+    /* Darker red for text */
+}
+
+.popup-content.moderate h4,
+.popup-content.moderate p {
+    color: #d35400;
+    /* Darker orange for text */
+}
+
+.popup-content.normal h4,
+.popup-content.normal p {
+    color: #27ae60;
+    /* Darker green for text */
+}
+
+/* No data overlay for map */
+.no-data-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    color: #555;
+    z-index: 1000;
+    /* Above map tiles */
+    border-radius: 8px;
+}
+
+/* Traffic List styles (có thể giữ nguyên hoặc điều chỉnh) */
+.traffic-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.traffic-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out;
+    padding: 15px;
+}
+
+.traffic-card:hover {
+    transform: translateY(-5px);
+}
+
+.traffic-card .info {
+    padding: 0;
+    /* Đã có padding ở card */
+}
+
+.traffic-card h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.traffic-card p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.traffic-card p strong {
+    color: #333;
+}

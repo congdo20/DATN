@@ -1,0 +1,241 @@
+import HomePage from "../components/pages/HomePage";
+import ViolationsPageAdmin from "../components/pages/admin/ViolationsPageAdmin";
+import ViolationsPageUser from "../components/pages/user/ViolationsPageUser";
+import VehiclesPage from "../components/pages/VehiclesPage";
+import PersonsPage from "../components/pages/PersonsPage";
+import TrafficPage from "../components/pages/TrafficStatusPage";
+import AnalyticsPage from "../components/pages/AnalyticsPage";
+import CameraManagePage from "../components/pages/CameraManagePage";
+import AccountManagePage from "../components/pages/AccountManagePage";
+import LoginPage from "../components/pages/LoginPage";
+import SignUpPage from "../components/pages/SignUpPage";
+import NotFoundPage from "../components/pages/NotFoundPage";
+import ShowCamera from "../components/pages/ShowCamera";
+import HomePageAdmin from "../components/pages/admin/HomePageAdmin";
+import HomePageUser from "../components/pages/user/HomePageUser";
+import PrivateRoute from "../routes/PrivateRoute";
+import UnauthorizedPage from "../components/pages/UnauthorizedPage";
+import RedirectToHome from "../routes/RedirectToHome";
+import SettingPage from "../components/pages/SettingPage";
+import SettingCameraPage from "../components/pages/SettingCameraPage";
+import MainLayout from "../components/layout/MainLayout";
+import SettingAccountPage from "../components/pages/SettingAccountPage";
+
+export const appRoutes = [
+  {
+    path: "/",
+    element: <RedirectToHome />,
+  },
+
+  {
+    path: "/admin/violations",
+    label: "Tra Cứu Vi Phạm Quản Trị",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <ViolationsPageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/user/violations",
+    label: "Tra Cứu Vi Phạm Người Dùng",
+    element: (
+      <PrivateRoute roles={["Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}>
+        <MainLayout>
+          <ViolationsPageUser />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/vehicles",
+    label: "Tìm Kiếm Phương Tiện",
+    element: (
+      <PrivateRoute
+        roles={["Quan Tri", "Giam Sat", "Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}
+      >
+        <MainLayout>
+          <VehiclesPage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/persons",
+    label: "Tìm Kiếm Người",
+    element: (
+      <PrivateRoute
+        roles={["Quan Tri", "Giam Sat", "Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}
+      >
+        <MainLayout>
+          <PersonsPage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/traffic",
+    label: "Tình Trạng Giao Thông",
+    element: (
+      <PrivateRoute
+        roles={["Quan Tri", "Giam Sat", "Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}
+      >
+        <MainLayout>
+          <TrafficPage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/analytics",
+    label: "Thống Kê",
+    element: (
+      <PrivateRoute
+        roles={["Quan Tri", "Giam Sat", "Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}
+      >
+        <MainLayout>
+          <AnalyticsPage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/accountmanage",
+    label: "Quản Lý Tài Khoản",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <AccountManagePage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/cameramanage",
+    label: "Quản Lý Camera",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <CameraManagePage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/login",
+    label: "Đăng Nhập",
+    element: (
+      <MainLayout>
+        <LoginPage />
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/signup",
+    label: "Đăng Ký",
+    element: (
+      <MainLayout>
+        <SignUpPage />
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/notfound",
+    label: "Lỗi 404",
+    element: (
+      <MainLayout>
+        <NotFoundPage />
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/showcamera/:id",
+    label: "Xem Camera",
+    element: (
+      <PrivateRoute
+        roles={["Quan Tri", "Giam Sat", "Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}
+      >
+        <MainLayout>
+          <ShowCamera />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/admin/home",
+    label: "Trang Chủ Quản Trị",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <HomePageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/user/home",
+    label: "Trang Chủ Người Dùng",
+    element: (
+      <PrivateRoute roles={["Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}>
+        <MainLayout>
+          <HomePageUser />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/unauthorized",
+    label: "Không Có Quyền",
+    element: (
+      <MainLayout>
+        <UnauthorizedPage />
+      </MainLayout>
+    ),
+  },
+  {
+    path: "*",
+    label: "Không Tìm Thấy",
+    element: (
+      <MainLayout>
+        <NotFoundPage />
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/accountsetting",
+    label: "Cài đặt tài khoản",
+    element: (
+      <PrivateRoute
+        roles={["Quan Tri", "Giam Sat", "Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}
+      >
+        <MainLayout>
+          <SettingPage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/camerasetting/:id",
+    label: "Cài đặt camera",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <SettingCameraPage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "admin/accountsetting/:userId",
+    label: "Cài đặt tài khoản quản trị",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <SettingAccountPage />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+];

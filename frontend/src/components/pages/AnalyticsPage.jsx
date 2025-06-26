@@ -4,6 +4,7 @@ import {
     LineChart, Line, CartesianGrid, Legend, PieChart, Pie, Cell
 } from 'recharts';
 import axios from 'axios';
+import { FaCarCrash, FaTachometerAlt } from 'react-icons/fa';
 import '../../assets/styles/AnalyticsPage.css';
 
 const COLORS = ['#ff4d4f', '#fa8c16', '#1890ff', '#52c41a', '#722ed1'];
@@ -38,8 +39,6 @@ const AnalyticsPage = () => {
                 const violationTypeArr = Object.entries(byType).map(([name, value]) => ({ name, value }));
                 setViolationTypeRatio(violationTypeArr);
 
-
-                
                 const resTraffic = await axios.get('http://127.0.0.1:8000/traffic/get');
                 const traffics = resTraffic.data;
 
@@ -69,24 +68,36 @@ const AnalyticsPage = () => {
     if (loading) return <div className="analytics-container"><p>Đang tải dữ liệu...</p></div>;
 
     return (
-        <div className="analytics-container">
-            <h1>Thống Kê Giao Thông</h1>
+        <div className="analytics-container" style={{ maxWidth: 1200, margin: '0 auto', padding: 24 }}>
+            <h1 style={{ textAlign: 'center', marginBottom: 32, color: '#1890ff', fontWeight: 700, letterSpacing: 1 }}>Thống Kê Giao Thông</h1>
 
-            <div className="stats-overview">
-                <div className="card">
-                    <h2>Tổng số vụ vi phạm</h2>
-                    <p>{violationStats.reduce((sum, v) => sum + v.count, 0)}</p>
+            <div className="stats-overview" style={{
+                display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 32, flexWrap: 'wrap'
+            }}>
+                <div className="card" style={{
+                    background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #0001', padding: 32, minWidth: 260, textAlign: 'center', flex: 1
+                }}>
+                    <FaCarCrash size={36} color="#ff4d4f" style={{ marginBottom: 12 }} />
+                    <h2 style={{ color: '#333', fontWeight: 600 }}>Tổng số vụ vi phạm</h2>
+                    <p style={{ fontSize: 32, color: '#ff4d4f', fontWeight: 700 }}>{violationStats.reduce((sum, v) => sum + v.count, 0)}</p>
                 </div>
-                <div className="card">
-                    <h2>Tốc độ trung bình</h2>
-                    <p>{avgSpeed ? `${avgSpeed} km/h` : 'Không có dữ liệu'}</p>
+                <div className="card" style={{
+                    background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #0001', padding: 32, minWidth: 260, textAlign: 'center', flex: 1
+                }}>
+                    <FaTachometerAlt size={36} color="#1890ff" style={{ marginBottom: 12 }} />
+                    <h2 style={{ color: '#333', fontWeight: 600 }}>Tốc độ trung bình</h2>
+                    <p style={{ fontSize: 32, color: '#1890ff', fontWeight: 700 }}>{avgSpeed ? `${avgSpeed} km/h` : 'Không có dữ liệu'}</p>
                 </div>
             </div>
 
-            <div className="charts-section">
-                <div className="chart-card">
-                    <h3>Số vụ vi phạm theo ngày</h3>
-                    <ResponsiveContainer width="100%" height={300}>
+            <div className="charts-section" style={{
+                display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24, marginBottom: 32
+            }}>
+                <div className="chart-card" style={{
+                    background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #0001', padding: 24
+                }}>
+                    <h3 style={{ color: '#ff4d4f', fontWeight: 600, marginBottom: 16 }}>Số vụ vi phạm theo ngày</h3>
+                    <ResponsiveContainer width="100%" height={260}>
                         <LineChart data={violationStats}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="date" />
@@ -98,9 +109,11 @@ const AnalyticsPage = () => {
                     </ResponsiveContainer>
                 </div>
 
-                <div className="chart-card">
-                    <h3>Phân bố mật độ giao thông</h3>
-                    <ResponsiveContainer width="100%" height={300}>
+                <div className="chart-card" style={{
+                    background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #0001', padding: 24
+                }}>
+                    <h3 style={{ color: '#1890ff', fontWeight: 600, marginBottom: 16 }}>Phân bố mật độ giao thông</h3>
+                    <ResponsiveContainer width="100%" height={260}>
                         <BarChart data={densityStats}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="mat_do" />
@@ -112,9 +125,11 @@ const AnalyticsPage = () => {
                     </ResponsiveContainer>
                 </div>
 
-                <div className="chart-card">
-                    <h3>Tỉ lệ loại vi phạm</h3>
-                    <ResponsiveContainer width="100%" height={300}>
+                <div className="chart-card" style={{
+                    background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #0001', padding: 24
+                }}>
+                    <h3 style={{ color: '#fa8c16', fontWeight: 600, marginBottom: 16 }}>Tỉ lệ loại vi phạm</h3>
+                    <ResponsiveContainer width="100%" height={260}>
                         <PieChart>
                             <Pie
                                 data={violationTypeRatio}
@@ -132,23 +147,6 @@ const AnalyticsPage = () => {
                             <Tooltip />
                         </PieChart>
                     </ResponsiveContainer>
-                    {/* Custom legend
-                    <div className="custom-legend">
-                        {violationTypeRatio.map((entry, index) => (
-                            <div key={entry.name} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
-                                <span style={{
-                                    display: 'inline-block',
-                                    width: 16,
-                                    height: 16,
-                                    backgroundColor: COLORS[index % COLORS.length],
-                                    borderRadius: 4,
-                                    marginRight: 8,
-                                    border: '1px solid #ccc'
-                                }} />
-                                <span>{entry.name}</span>
-                            </div>
-                        ))}
-                    </div> */}
                 </div>
             </div>
         </div>

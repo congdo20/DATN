@@ -55,22 +55,28 @@ export default function LoginPage() {
         );
 
         if (foundUser) {
-          sessionStorage.setItem("authUser", JSON.stringify(foundUser));
-          sessionStorage.setItem("role", foundUser.VaiTro);
-          login(foundUser);
-          
-          setSuccess("Đăng nhập thành công! Đang chuyển hướng...");
-          
-          setTimeout(() => {
-            if (
-              foundUser.VaiTro === "Quan Tri" ||
-              foundUser.VaiTro === "Giam Sat"
-            ) {
-              navigate("/admin/home");
-            } else {
-              navigate("/user/home");
-            }
-          }, 500);
+          if (foundUser.TrangThai === "Hoat Dong") {
+            sessionStorage.setItem("authUser", JSON.stringify(foundUser));
+            sessionStorage.setItem("role", foundUser.VaiTro);
+            login(foundUser);
+            setSuccess("Đăng nhập thành công! Đang chuyển hướng...");
+            setTimeout(() => {
+              if (
+                foundUser.VaiTro === "Quan Tri" ||
+                foundUser.VaiTro === "Giam Sat"
+              ) {
+                navigate("/admin/home");
+              } else {
+                navigate("/user/home");
+              }
+            }, 500);
+          } else if (foundUser.TrangThai === "Khoa") {
+            setError("Tài khoản đã bị khoá. Vui lòng liên hệ quản trị viên.");
+          } else if (foundUser.TrangThai === "Tam Ngung") {
+            setError("Tài khoản đã bị tạm ngưng. Vui lòng liên hệ quản trị viên.");
+          } else {
+            setError("Tài khoản không hợp lệ.");
+          }
         } else {
           setError("Email hoặc mật khẩu không đúng");
         }

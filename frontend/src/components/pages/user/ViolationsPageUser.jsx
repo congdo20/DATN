@@ -30,7 +30,6 @@ const ViolationsPageUser = () => {
     fetchViolationData();
   }, []);
 
-  // Fetch violation data from API
   const fetchViolationData = async () => {
     setIsLoading(true);
     setError("");
@@ -42,7 +41,7 @@ const ViolationsPageUser = () => {
         // "http://127.0.0.1:8000/violations/get"
       );
       setViolationList(response.data);
-      setFilteredViolations(response.data); // Initially show all data
+      setFilteredViolations(response.data);
     } catch (error) {
       console.error("Error fetching violation data:", error);
       setError("Không thể tải dữ liệu vi phạm. Vui lòng thử lại sau.");
@@ -51,11 +50,9 @@ const ViolationsPageUser = () => {
     }
   };
 
-  // Filter violations based on search criteria
   const filterViolations = () => {
     let filtered = [...violationList];
 
-    // Filter by date range
     if (fromDate) {
       filtered = filtered.filter(violation => {
         const violationDate = new Date(violation.ThoiGian);
@@ -68,19 +65,17 @@ const ViolationsPageUser = () => {
       filtered = filtered.filter(violation => {
         const violationDate = new Date(violation.ThoiGian);
         const toDateObj = new Date(toDate);
-        toDateObj.setHours(23, 59, 59, 999); // End of day
+        toDateObj.setHours(23, 59, 59, 999);
         return violationDate <= toDateObj;
       });
     }
 
-    // Filter by license plate
     if (licensePlate.trim()) {
       filtered = filtered.filter(violation =>
         violation.phuongtien?.BienSo?.toLowerCase().includes(licensePlate.toLowerCase())
       );
     }
 
-    // Filter by camera ID
     if (cameraId.trim()) {
       filtered = filtered.filter(violation =>
         violation.anh?.camera?.IdCamera?.toString().includes(cameraId) ||
@@ -88,7 +83,6 @@ const ViolationsPageUser = () => {
       );
     }
 
-    // Filter by vehicle type
     if (vehicleType) {
       filtered = filtered.filter(violation =>
         violation.phuongtien?.KieuXe?.toLowerCase().includes(vehicleType.toLowerCase())
@@ -97,18 +91,15 @@ const ViolationsPageUser = () => {
 
     setFilteredViolations(filtered);
     
-    // Reset selected violation if it's not in filtered results
     if (selectedViolation && !filtered.find(v => v.IdPhatHien === selectedViolation.IdPhatHien)) {
       setSelectedViolation(filtered.length > 0 ? filtered[0] : null);
     }
   };
 
-  // Handle search button click
   const handleSearch = () => {
     filterViolations();
   };
 
-  // Handle reset filters
   const handleReset = () => {
     setFromDate("");
     setToDate("");
@@ -119,13 +110,11 @@ const ViolationsPageUser = () => {
     setSelectedViolation(violationList.length > 0 ? violationList[0] : null);
   };
 
-  // Handle create record
   const handleCreateRecord = (format = 'print') => {
     const result = generateReport(selectedViolation, format, apiHost, apiPort);
     
     if (result.success) {
       setSuccessMessage(result.message);
-      // Clear success message after 5 seconds
       setTimeout(() => {
         setSuccessMessage("");
       }, 5000);
@@ -140,7 +129,6 @@ const ViolationsPageUser = () => {
     
     if (result.success) {
       setSuccessMessage(result.message);
-      // Clear success message after 5 seconds
       setTimeout(() => {
         setSuccessMessage("");
       }, 5000);
@@ -149,10 +137,9 @@ const ViolationsPageUser = () => {
     }
   };
 
-  // Handle violation selection
   const handleViolationSelect = (violation) => {
     setSelectedViolation(violation);
-    setImageError(false); // Reset image error when selecting new violation
+    setImageError(false);
   };
 
   const displayedViolation = selectedViolation || (filteredViolations.length > 0 ? filteredViolations[0] : null);

@@ -25,7 +25,7 @@ import {
   VideoSettings as SettingsVideoCameraIcon,
   Menu as MenuIcon,
 } from "@mui/icons-material";
-import { useAuth } from "../../context/AuthContext"; // Giả sử bạn có AuthContext để quản lý đăng nhập
+import { useAuth } from "../../context/AuthContext"; 
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    logout(); // Gọi từ AuthContext
+    logout(); 
     navigate("/login");
     handleClose();
   };
@@ -179,7 +179,7 @@ const Navbar = () => {
               {isAdmin && (
                 <MenuItem
                   onClick={() => {
-                    navigate("/accountmanage");
+                    navigate("/admin/accountmanage");
                     handleClose();
                   }}
                 >
@@ -193,7 +193,7 @@ const Navbar = () => {
               {isAdmin && (
                 <MenuItem
                   onClick={() => {
-                    navigate("/cameramanage");
+                    navigate("/admin/cameramanage");
                     handleClose();
                   }}
                 >

@@ -40,14 +40,28 @@ def check_phone_exists(
         return schemas.PhoneCheckResponse(exists=True, userId=existing_user.IdTaiKhoan)
     return schemas.PhoneCheckResponse(exists=False, userId=None)
 
+@router.get("/get/check/email")
+def check_email_exists(email: str = Query(...), db: Session = Depends(get_db)):
+    existing_user = db.query(models.TaiKhoan).filter(models.TaiKhoan.Email == email).first()
+    if existing_user:
+        return {"exists": True, "userId": existing_user.IdTaiKhoan}
+    return {"exists": False, "userId": None}
 
 @router.post("/post", response_model=schemas.TaiKhoan, status_code=status.HTTP_201_CREATED)
 def create_user(user: schemas.TaiKhoanCreate, db: Session = Depends(get_db)):
+    # Kiểm tra email
     existing_user = db.query(models.TaiKhoan).filter(models.TaiKhoan.Email == user.Email).first()
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email đã được đăng ký"
+        )
+    # Kiểm tra số điện thoại
+    existing_phone = db.query(models.TaiKhoan).filter(models.TaiKhoan.SoDienThoai == user.SoDienThoai).first()
+    if existing_phone:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Số điện thoại đã được đăng ký"
         )
     db_user = models.TaiKhoan(**user.dict())
     db.add(db_user)

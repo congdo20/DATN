@@ -8,6 +8,7 @@ from datetime import datetime
 from sqlalchemy import or_, func, cast, String, and_
 from rapidfuzz import fuzz
 import re
+import json
 
 
 router = APIRouter(
@@ -127,43 +128,171 @@ def extract_age_range(text: str):
         return int(matches[0][0]), int(matches[0][1])
     return None
 
+# @router.get("/get/feature/{detect_person_feature}", response_model=List[schemas.NhanDangNguoi])
+# def get_person_by_feature(detect_person_feature: str, db: Session = Depends(get_db)):
+#     all_persons = db.query(models.NhanDangNguoi).all()
+#     query = detect_person_feature.lower().strip()
+
+#     age_range = extract_age_range(query)
+#     filtered = []
+
+#     for p in all_persons:
+#         dac_trung = p.DacTrung or {}
+#         match_score = 0
+
+#         description = " ".join([
+#             dac_trung.get("TrangPhuc", ""),
+#             dac_trung.get("PhuKien", ""),
+#             dac_trung.get("Toc", ""),
+#             dac_trung.get("HinhDang", ""),
+#             p.GioiTinh or ""
+#         ]).lower()
+
+#         score = fuzz.partial_ratio(query, description)
+
+#         if score >= 60:
+#             match_score += score
+
+#         if age_range:
+#             min_age, max_age = age_range
+#             if p.Tuoi and min_age <= p.Tuoi <= max_age:
+#                 match_score += 100
+
+#         elif str(p.Tuoi) in query:
+#             match_score += 50
+
+#         if match_score > 60:
+#             filtered.append(p)
+
+#     return filtered
+
+
+# @router.get("/get/feature/{detect_person_feature}", response_model=List[schemas.NhanDangNguoi])
+# def get_person_by_feature(
+#     detect_person_feature: str, 
+#     db: Session = Depends(get_db),
+#     limit: int = Query(10, ge=1, description="Giới hạn số lượng kết quả trả về")
+# ):
+#     all_persons = db.query(models.NhanDangNguoi).all()
+#     query = detect_person_feature.lower().strip()
+    
+#     filtered_persons = []
+
+#     for p in all_persons:
+#         dac_trung = p.DacTrung or {}
+#         captions = dac_trung.get("captions", [])
+        
+#         if isinstance(captions, str):
+#             try:
+#                 captions = json.loads(captions)
+#             except json.JSONDecodeError:
+#                 captions = []
+        
+#         if not isinstance(captions, list):
+#             captions = []
+
+#         searchable_text = " ".join(captions).lower()
+#         if p.GioiTinh:
+#             searchable_text += f" {p.GioiTinh.lower()}"
+#         if p.Tuoi is not None:
+#             searchable_text += f" {p.Tuoi}"
+
+#         score = fuzz.partial_ratio(query, searchable_text)
+
+#         if score >= 80:
+#             filtered_persons.append(p)
+
+#     if not filtered_persons:
+#          raise HTTPException(status_code=404, detail="Không tìm thấy người với mô tả này")
+
+#     return filtered_persons[:limit]
+
+from fastapi import Query, HTTPException, Depends
+from sqlalchemy.orm import Session
+from sqlalchemy import func, cast, String
+from typing import List
+from app.models import models
+from app.schemas import schemas
+from app.database import SessionLocal
+from rapidfuzz import fuzz
+import json
+
 @router.get("/get/feature/{detect_person_feature}", response_model=List[schemas.NhanDangNguoi])
-def get_person_by_feature(detect_person_feature: str, db: Session = Depends(get_db)):
-    all_persons = db.query(models.NhanDangNguoi).all()
+def get_person_by_feature(
+    detect_person_feature: str, 
+    db: Session = Depends(get_db),
+    limit: int = Query(50, ge=1, le=50, description="Giới hạn số kết quả trả về (tối đa 50)")
+):
     query = detect_person_feature.lower().strip()
 
-    age_range = extract_age_range(query)
+    # Bước 1: Lọc sơ bộ bằng LIKE trong JSON captions
+    try:
+        potential_matches = db.query(models.NhanDangNguoi).filter(
+            func.lower(
+                cast(func.json_extract(models.NhanDangNguoi.DacTrung, '$.captions'), String)
+            ).like(f"%{query}%")
+        ).limit(100).all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi truy vấn sơ bộ: {str(e)}")
+
+    # Bước 2: Tính điểm khớp fuzzy
+    scored_persons = []
+    for p in potential_matches:
+        try:
+            dac_trung = p.DacTrung or {}
+            if isinstance(dac_trung, str):
+                dac_trung = json.loads(dac_trung)
+
+            captions = dac_trung.get("captions", [])
+            if not isinstance(captions, list):
+                continue
+        except Exception:
+            continue
+
+        text = " ".join(captions).lower()
+        if p.GioiTinh:
+            text += f" {p.GioiTinh.lower()}"
+        if p.Tuoi is not None:
+            text += f" {p.Tuoi}"
+
+        score = fuzz.token_set_ratio(query, text)
+        if score >= 50:
+            scored_persons.append((score, p))
+
+    # Bước 3: Trả kết quả sắp xếp theo độ khớp
+    if not scored_persons:
+        raise HTTPException(status_code=404, detail="Không tìm thấy người phù hợp với mô tả.")
+
+    sorted_result = sorted(scored_persons, key=lambda x: x[0], reverse=True)
+    return [item[1] for item in sorted_result[:limit]]
+
+
+
+
+
+@router.get("/get/caption/{keyword}", response_model=List[schemas.NhanDangNguoi])
+def get_person_by_caption(keyword: str, db: Session = Depends(get_db)):
+    """
+    Tìm kiếm người theo từ khóa xuất hiện trong bất kỳ caption nào trong DacTrung.
+    """
+    keyword_lower = keyword.lower()
+    persons = db.query(models.NhanDangNguoi).all()
     filtered = []
-
-    for p in all_persons:
+    for p in persons:
         dac_trung = p.DacTrung or {}
-        match_score = 0
-
-        description = " ".join([
-            dac_trung.get("TrangPhuc", ""),
-            dac_trung.get("PhuKien", ""),
-            dac_trung.get("Toc", ""),
-            dac_trung.get("HinhDang", ""),
-            p.GioiTinh or ""
-        ]).lower()
-
-        score = fuzz.partial_ratio(query, description)
-
-        if score >= 60:
-            match_score += score
-
-        if age_range:
-            min_age, max_age = age_range
-            if p.Tuoi and min_age <= p.Tuoi <= max_age:
-                match_score += 100
-
-        elif str(p.Tuoi) in query:
-            match_score += 50
-
-        if match_score > 60:
-            filtered.append(p)
-
+        captions = dac_trung.get("captions", [])
+        # captions có thể là list hoặc chuỗi JSON, cần kiểm tra kiểu
+        if isinstance(captions, str):
+            try:
+                captions = json.loads(captions)
+            except Exception:
+                captions = [captions]
+        for cap in captions:
+            if keyword_lower in cap.lower():
+                filtered.append(p)
+                break
     return filtered
+
 
 
 @router.post("/post", response_model=schemas.NhanDangNguoi, status_code=status.HTTP_201_CREATED)
@@ -206,6 +335,7 @@ def update_do_tin_cay(
     db.refresh(person)
 
     return {"message": "Cập nhật độ tin cậy thành công", "DoTinCay": person.DoTinCay}
+
 @router.put("/put/image/{image_id}", response_model=schemas.NhanDangNguoi)
 def update_person_by_image(image_id: int, update_data: schemas.NhanDangNguoiUpdate, db: Session = Depends(get_db)):
     persons = db.query(models.NhanDangNguoi).filter(models.NhanDangNguoi.IdAnh == image_id).all()
@@ -247,7 +377,6 @@ def update_person_by_camera(camera_id: int, update_data: schemas.NhanDangNguoiUp
 
     db.commit()
     return persons
-
 
 
 @router.delete("/delete/id/{person_id}", status_code=status.HTTP_204_NO_CONTENT)

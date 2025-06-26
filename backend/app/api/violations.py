@@ -303,22 +303,32 @@ def update_violations_location(location: str, update_data: schemas.PhatHienViPha
     return violations
 
 
-@router.put("/put/status/{status}", response_model=List[schemas.PhatHienViPham])
-def update_violations_status(status: str, update_data: schemas.PhatHienViPhamUpdate, db: Session = Depends(get_db)):
-    violations = db.query(models.PhatHienViPham).filter(models.PhatHienViPham.TrangThai == status).all()
+# @router.put("/put/status/{status}", response_model=List[schemas.PhatHienViPham])
+# def update_violations_status(status: str, update_data: schemas.PhatHienViPhamUpdate, db: Session = Depends(get_db)):
+#     violations = db.query(models.PhatHienViPham).filter(models.PhatHienViPham.TrangThai == status).all()
     
-    if not violations:
-        raise HTTPException(status_code=404, detail="Không tìm thấy vi phạm với trạng thái đã chọn")
+#     if not violations:
+#         raise HTTPException(status_code=404, detail="Không tìm thấy vi phạm với trạng thái đã chọn")
     
-    for violation in violations:
-        for key, value in update_data.dict(exclude_unset=True).items():
-            setattr(violation, key, value)
-        violation.updated_at = datetime.now()
+#     for violation in violations:
+#         for key, value in update_data.dict(exclude_unset=True).items():
+#             setattr(violation, key, value)
+#         violation.updated_at = datetime.now()
 
+#     db.commit()
+#     return violations
+
+@router.put("/put/status/{id}", response_model=schemas.PhatHienViPham)
+def update_violation_status(id: int, update_data: schemas.PhatHienViPhamUpdateTrangThai, db: Session = Depends(get_db)):
+    violation = db.query(models.PhatHienViPham).filter(models.PhatHienViPham.IdPhatHien == id).first()
+    if not violation:
+        raise HTTPException(status_code=404, detail="Không tìm thấy vi phạm với IdPhatHien đã chọn")
+    for key, value in update_data.dict(exclude_unset=True).items():
+        setattr(violation, key, value)
+    violation.updated_at = datetime.now()
     db.commit()
-    return violations
-
-
+    db.refresh(violation)
+    return violation
 
 @router.delete("/delete/id/{violation_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_violation(violation_id: int, db: Session = Depends(get_db)):

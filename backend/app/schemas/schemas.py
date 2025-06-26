@@ -369,8 +369,8 @@ class DacTrungData(BaseSchema):
 class NhanDangNguoiBase(BaseSchema):
     Tuoi: Optional[int] = None
     GioiTinh: Optional[str] = None
-    # DacTrung: Optional[dict] = None
-    DacTrung: DacTrungData
+    DacTrung: Optional[dict] = None
+    # DacTrung: DacTrungData
     ThoiGian: datetime
     ViTri: Optional[str] = None
     DoTinCay: Optional[float] = None
@@ -379,8 +379,8 @@ class NhanDangNguoiCreate(NhanDangNguoiBase):
     IdAnh: int
     Tuoi: Optional[int] = None
     GioiTinh: Optional[str] = None
-    # DacTrung: Optional[dict] = None
-    DacTrung: DacTrungData
+    DacTrung: Optional[dict] = None
+    # DacTrung: DacTrungData
     ThoiGian: datetime
     ViTri: Optional[str] = None
     DoTinCay: Optional[float] = None
@@ -389,8 +389,8 @@ class NhanDangNguoiUpdate(NhanDangNguoiBase):
     IdAnh: int
     Tuoi: Optional[int] = None
     GioiTinh: Optional[str] = None
-    # DacTrung: Optional[dict] = None
-    DacTrung: DacTrungData
+    DacTrung: Optional[dict] = None
+    # DacTrung: DacTrungData
     ThoiGian: datetime
     ViTri: Optional[str] = None
     DoTinCay: Optional[float] = None
@@ -419,7 +419,8 @@ class NhanDangNguoiFilter(BaseSchema):
     IdAnh: Optional[int] = None
     Tuoi: Optional[int] = None
     GioiTinh: Optional[str] = None
-    DacTrung: Optional[DacTrungData] = None
+    # DacTrung: Optional[DacTrungData] = None
+    DacTrung: Optional[dict] = None
     ThoiGian: Optional[datetime] = None
     ViTri: Optional[str] = None
     DoTinCay: Optional[float] = None

@@ -15,16 +15,14 @@
     margin-bottom: 20px;
 }
 
-/* Map specific styles */
 .map-container {
     margin-bottom: 30px;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    /* Ensure map doesn't overflow its container */
+
 }
 
-/* Custom marker styles */
 .custom-marker-icon {
     width: 20px;
     height: 20px;
@@ -34,7 +32,6 @@
     justify-content: center;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     border: 2px solid white;
-    /* Border for visibility */
 }
 
 .marker-dot {
@@ -42,11 +39,10 @@
     height: 10px;
     border-radius: 50%;
     background-color: white;
-    /* Default color, overridden by color classes */
-    /* Animation or other effects can be added here */
+
 }
 
-/* Color classes for markers and cards */
+
 .custom-marker-icon.severe .marker-dot,
 .traffic-card.severe {
     background-color: #e74c3c;
@@ -85,19 +81,16 @@
 .popup-content.severe h4,
 .popup-content.severe p {
     color: #c0392b;
-    /* Darker red for text */
 }
 
 .popup-content.moderate h4,
 .popup-content.moderate p {
     color: #d35400;
-    /* Darker orange for text */
 }
 
 .popup-content.normal h4,
 .popup-content.normal p {
     color: #27ae60;
-    /* Darker green for text */
 }
 
 /* No data overlay for map */
@@ -118,7 +111,6 @@
     border-radius: 8px;
 }
 
-/* Traffic List styles (có thể giữ nguyên hoặc điều chỉnh) */
 .traffic-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -143,7 +135,6 @@
 
 .traffic-card .info {
     padding: 0;
-    /* Đã có padding ở card */
 }
 
 .traffic-card h3 {

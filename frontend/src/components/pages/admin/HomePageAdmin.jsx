@@ -37,7 +37,7 @@ const HomePageAdmin = () => {
   const apiHost = process.env.REACT_APP_API_HOST;
   const apiPort = process.env.REACT_APP_API_PORT;
 
-  // Fetch camera list from API when component mounts
+
   useEffect(() => {
     const fetchCameras = async () => {
       try {
@@ -73,7 +73,7 @@ const HomePageAdmin = () => {
     setFilteredCameras(results);
   }, [searchQuery, selectedArea, cameras]);
 
-  // Calculate quick statistics
+
   const totalCameras = cameras.length;
   const activeCameras = cameras.filter(cam => cam.TrangThaiCamera === "Hoat Dong").length;
   const availableAreas = [...new Set(cameras.map(cam => cam.khuvuc?.TenKhuVuc).filter(Boolean))].length;
@@ -88,7 +88,6 @@ const HomePageAdmin = () => {
 
   const label = statusLabelMap[cameras.TrangThaiCamera] || "Không xác định";
 
-  // Get status icon and class
   const getStatusIcon = (status) => {
     switch (status) {
       case "Hoat Dong":
@@ -120,7 +119,6 @@ const HomePageAdmin = () => {
   };
 
 
-  // Handle camera click
   const handleCameraClick = (cameraId) => {
     navigate(`/showcamera/${cameraId}`);
   };
@@ -136,7 +134,6 @@ const HomePageAdmin = () => {
   };
 
   const isStreamUrl = (url) => {
-    // Kiểm tra các pattern stream phổ biến
     const streamPatterns = [
       "/video_feed",
       "/stream",
@@ -275,10 +272,9 @@ const HomePageAdmin = () => {
               style={{ cursor: 'pointer' }}
             >
               <div className="camera-video-container">
-                {camera.IpCamera ? (
+                {camera.IpCamera && camera.TrangThaiCamera === 'Hoat Dong' ? (
                   (() => {
                     const mediaType = getMediaType(camera.IpCamera);
-                    
                     switch (mediaType) {
                       case 'video':
                         return (
@@ -317,7 +313,6 @@ const HomePageAdmin = () => {
                             }}
                           />
                         );
-                      
                       case 'image':
                         return (
                           <img
@@ -335,9 +330,6 @@ const HomePageAdmin = () => {
                             }}
                           />
                         );
-                      
-                      
-                      
                       default:
                         return (
                           <div className="camera-placeholder">
@@ -349,8 +341,8 @@ const HomePageAdmin = () => {
                   })()
                 ) : (
                   <div className="camera-placeholder">
-                    <Videocam />
-                    <span>Không có stream</span>
+                    <VideocamOff />
+                    <span>{statusLabelMap[camera.TrangThaiCamera] || 'Không hoạt động'}</span>
                   </div>
                 )}
               </div>

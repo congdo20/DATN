@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Input, Spin, Card, Row, Col, message, Radio } from 'antd';
+import { Button, Input, Spin, Card, Row, Col, message, Radio, Form, InputNumber } from 'antd';
 import axios from 'axios';
 import '../../assets/styles/PersonPage.css';
 
@@ -10,16 +10,17 @@ const PersonsPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [persons, setPersons] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [limit, setLimit] = useState(10);
 
     const handleSearch = async () => {
         setLoading(true);
         try {
             const response = await axios.get(
-                `http://${apiHost}:${apiPort}/detect_persons/get/feature/${encodeURIComponent(searchTerm)}`
+                `http://${apiHost}:${apiPort}/detect_persons/get/feature/${encodeURIComponent(searchTerm)}?limit=${limit}`
             );
             setPersons(Array.isArray(response.data) ? response.data : []);
             if (!response.data || response.data.length === 0) {
-                message.info('Không tìm thấy người phù hợp với đặc trưng này.');
+                message.info('Không tìm thấy người phù hợp với mô tả này.');
             }
         } catch (error) {
             message.error('Không thể lấy dữ liệu người nhận dạng.');
@@ -59,7 +60,7 @@ const PersonsPage = () => {
                 <div style={{ textAlign: 'center', marginTop: 50 }}>
                     {searchTerm
                         ? 'Không tìm thấy người phù hợp.'
-                        : 'Nhập mô tả, tuổi, giới tính, trang phục... để tìm kiếm.'}
+                        : 'Nhập mô tả để tìm kiếm.'}
                 </div>
             );
         }
@@ -72,22 +73,24 @@ const PersonsPage = () => {
                         <Col xs={24} sm={12} md={8} lg={6} key={item.IdNhanDangNguoi || index}>
                             <Card
                                 hoverable
-                                title={`Tuổi: ${Tuoi || '?'} - ${GioiTinh === "Nam" ? "Nam" : (GioiTinh === "Nu" ? "Nữ" : "Khác") || '?'}`}
+                                // title={`Tuổi: ${Tuoi || '?'} - ${GioiTinh === "Nam" ? "Nam" : (GioiTinh === "Nu" ? "Nữ" : "Khác") || '?'}`}
                                 cover={
                                     anh?.DuongDan ? (
-                                        <img
-                                            alt="Ảnh nhận dạng"
-                                            src={anh.DuongDan.startsWith('http')
-                                                ? anh.DuongDan
-                                                : `http://${apiHost}:${apiPort}${anh.DuongDan}`}
-                                            onError={e => {
-                                                e.target.onerror = null;
-                                                e.target.src = '/fallback-image.jpg';
-                                            }}
-                                            style={{ height: 160, objectFit: 'cover' }}
-                                        />
+                                        <div style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', background: '#f5f5f5' }}>
+                                            <img
+                                                alt="Ảnh nhận dạng"
+                                                src={anh.DuongDan.startsWith('http')
+                                                    ? anh.DuongDan
+                                                    : `http://${apiHost}:${apiPort}${anh.DuongDan}`}
+                                                onError={e => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = '/fallback-image.jpg';
+                                                }}
+                                                style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transform: 'scale(1)' }}
+                                            />
+                                        </div>
                                     ) : (
-                                        <div style={{ height: 160, background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <div style={{ height: 200, background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             Không có ảnh
                                         </div>
                                     )
@@ -109,13 +112,27 @@ const PersonsPage = () => {
                                     <Radio.Button value="trust">Tin cậy</Radio.Button>
                                     <Radio.Button value="not_trust">Không tin cậy</Radio.Button>
                                 </Radio.Group>
-                                <p><b>Trang phục:</b> {DacTrung?.TrangPhuc || 'Không rõ'}</p>
+                                {/* <p><b>Trang phục:</b> {DacTrung?.TrangPhuc || 'Không rõ'}</p>
                                 <p><b>Phụ kiện:</b> {DacTrung?.PhuKien || 'Không rõ'}</p>
                                 <p><b>Hình dáng:</b> {DacTrung?.HinhDang || 'Không rõ'}</p>
-                                <p><b>Tóc:</b> {DacTrung?.Toc || 'Không rõ'}</p>
+                                <p><b>Tóc:</b> {DacTrung?.Toc || 'Không rõ'}</p> */}
+                                {/* {DacTrung?.captions?.map((caption, index) => (
+                                    <p key={index}><b>Mô tả:</b> {caption}</p>
+                                ))} */}
+                                                                
+                                {DacTrung?.captions && DacTrung.captions.length > 0 && (
+                                    <div style={{ marginTop: '8px' }}>
+                                        <b>Mô tả:</b>
+                                        <ul style={{ paddingLeft: '20px', marginBottom: '0', marginTop: '4px' }}>
+                                            {DacTrung.captions.map((caption, index) => (
+                                                <li key={index} style={{ marginBottom: '4px' }}>{caption}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                 <p><b>Thời gian nhận dạng:</b> {ThoiGian ? new Date(ThoiGian).toLocaleString('vi-VN') : 'Không rõ'}</p>
                                 <p><b>Vị trí nhận dạng:</b> {ViTri || 'Không rõ'}</p>
-                                <p><b>Độ tin cậy:</b> {DoTinCay !== undefined ? Number(DoTinCay).toFixed(2) : 'Không rõ'}</p>
+                                {/* <p><b>Độ tin cậy:</b> {DoTinCay !== undefined ? Number(DoTinCay).toFixed(2) : 'Không rõ'}</p> */}
                                 <p><b>Thời gian ảnh:</b> {anh?.ThoiGian ? new Date(anh.ThoiGian).toLocaleString('vi-VN') : 'Không có'}</p>
                                 <p><b>IP Camera:</b> {camera?.IpCamera || 'Không rõ'}</p>
                             </Card>
@@ -129,14 +146,22 @@ const PersonsPage = () => {
     return (
         <div className="person-search-container">
             <h1>Tìm kiếm người nhận dạng</h1>
-            <div className="search-bar" style={{ marginBottom: 24 }}>
+            <div className="search-bar" style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Input
-                    style={{ width: 300, marginRight: 8 }}
-                    placeholder="Nhập mô tả, tuổi, giới tính, trang phục, tóc..."
+                    style={{ width: 300 }}
+                    placeholder="Nhập mô tả để tìm kiếm..."
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                     onPressEnter={handleSearch}
                 />
+                <Form.Item label="Số kết quả" style={{ marginBottom: 0 }}>
+                    <InputNumber
+                        min={1}
+                        max={50}
+                        value={limit}
+                        onChange={(value) => setLimit(value || 1)}
+                    />
+                </Form.Item>
                 <Button type="primary" onClick={handleSearch} loading={loading}>
                     Tìm kiếm
                 </Button>

@@ -1,5 +1,3 @@
-# This is a web app for control camera traffic
-
 # Di chuyển vào thư mục backend
 cd DATN/backend
 

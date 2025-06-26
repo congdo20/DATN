@@ -36,7 +36,6 @@ const HomePageUser = () => {
   const apiHost = process.env.REACT_APP_API_HOST;
   const apiPort = process.env.REACT_APP_API_PORT;
 
-  // Fetch camera list from API when component mounts
   useEffect(() => {
     const fetchCameras = async () => {
       try {
@@ -104,7 +103,6 @@ const HomePageUser = () => {
     }
   };
 
-  // Handle camera click
   const handleCameraClick = (cameraId) => {
     navigate(`/showcamera/${cameraId}`);
   };
@@ -120,7 +118,6 @@ const HomePageUser = () => {
   };
 
   const isStreamUrl = (url) => {
-    // Kiểm tra các pattern stream phổ biến
     const streamPatterns = [
       "/video_feed",
       "/stream",
@@ -259,10 +256,9 @@ const HomePageUser = () => {
               style={{ cursor: 'pointer' }}
             >
               <div className="camera-video-container">
-                {camera.IpCamera ? (
+                {camera.IpCamera && camera.TrangThaiCamera === 'Hoat Dong' ? (
                   (() => {
                     const mediaType = getMediaType(camera.IpCamera);
-                    
                     switch (mediaType) {
                       case 'video':
                         return (
@@ -284,25 +280,6 @@ const HomePageUser = () => {
                             }}
                           />
                         );
-                      
-                      case 'image':
-                        return (
-                          <img
-                            src={`http://${camera.IpCamera}`}
-                            alt={`Camera ${camera.ViTriLapDat}`}
-                            className="camera-video"
-                            onError={(e) => {
-                              console.error(
-                                `Error loading image ${camera.IdCamera}:`,
-                                e
-                              );
-                              setTimeout(() => {
-                                e.target.src = `http://${camera.IpCamera}?t=${Date.now()}`;
-                              }, 1000);
-                            }}
-                          />
-                        );
-                      
                       case 'stream':
                         return (
                           <img
@@ -320,7 +297,23 @@ const HomePageUser = () => {
                             }}
                           />
                         );
-                      
+                      case 'image':
+                        return (
+                          <img
+                            src={`http://${camera.IpCamera}`}
+                            alt={`Camera ${camera.ViTriLapDat}`}
+                            className="camera-video"
+                            onError={(e) => {
+                              console.error(
+                                `Error loading image ${camera.IdCamera}:`,
+                                e
+                              );
+                              setTimeout(() => {
+                                e.target.src = `http://${camera.IpCamera}?t=${Date.now()}`;
+                              }, 1000);
+                            }}
+                          />
+                        );
                       default:
                         return (
                           <div className="camera-placeholder">
@@ -332,8 +325,8 @@ const HomePageUser = () => {
                   })()
                 ) : (
                   <div className="camera-placeholder">
-                    <Videocam />
-                    <span>Không có stream</span>
+                    <VideocamOff />
+                    <span>{getStatusIcon(camera.TrangThaiCamera)}</span>
                   </div>
                 )}
               </div>

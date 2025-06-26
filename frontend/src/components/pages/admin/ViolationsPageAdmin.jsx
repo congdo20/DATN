@@ -24,6 +24,12 @@ const ViolationsPageAdmin = () => {
   const apiHost = process.env.REACT_APP_API_HOST;
   const apiPort = process.env.REACT_APP_API_PORT;
 
+  const STATUS_OPTIONS = [
+    { value: "Chua Xu Ly", label: "Chưa xử lý" },
+    { value: "Da Xu Ly", label: "Đã xử lý" },
+    { value: "Huy", label: "Huỷ" }
+  ];
+
   useEffect(() => {
     fetchViolationData();
   }, []);
@@ -148,6 +154,34 @@ const ViolationsPageAdmin = () => {
   const handleViolationSelect = (violation) => {
     setSelectedViolation(violation);
     setImageError(false); // Reset image error when selecting new violation
+  };
+
+  const handleStatusChange = async (violation, newStatus) => {
+    try {
+      await axios.put(
+        `http://${apiHost}:${apiPort}/violations/put/status/${violation.IdPhatHien}`,
+        { TrangThai: newStatus }
+      );
+      setFilteredViolations(prev =>
+        prev.map(v =>
+          v.IdPhatHien === violation.IdPhatHien
+            ? { ...v, TrangThai: newStatus }
+            : v
+        )
+      );
+      setViolationList(prev =>
+        prev.map(v =>
+          v.IdPhatHien === violation.IdPhatHien
+            ? { ...v, TrangThai: newStatus }
+            : v
+        )
+      );
+      setSuccessMessage("Cập nhật trạng thái thành công!");
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (err) {
+      setError("Cập nhật trạng thái thất bại!");
+      setTimeout(() => setError(""), 3000);
+    }
   };
 
   const displayedViolation = selectedViolation || (filteredViolations.length > 0 ? filteredViolations[0] : null);
@@ -394,6 +428,7 @@ const ViolationsPageAdmin = () => {
                 <th>Chủ sở hữu</th>
                 <th>Loại xe</th>
                 <th>Trạng thái</th>
+                <th>Cập nhật trạng thái</th>
               </tr>
             </thead>
             <tbody>
@@ -421,6 +456,17 @@ const ViolationsPageAdmin = () => {
                     <span className={getStatusClass(violation.TrangThai)}>
                       {getStatusDisplay(violation.TrangThai)}
                     </span>
+                  </td>
+                  <td>
+                    <select
+                      value={violation.TrangThai}
+                      onChange={e => handleStatusChange(violation, e.target.value)}
+                      style={{ padding: 4, borderRadius: 4 }}
+                    >
+                      {STATUS_OPTIONS.map(opt => (
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
                   </td>
                 </tr>
               ))}

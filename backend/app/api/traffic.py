@@ -47,6 +47,31 @@ async def get_all_traffic_status(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@router.get("/get/latest", response_model=List[schemas.TinhTrangGiaoThong])
+async def get_latest_traffic_status(db: Session = Depends(get_db)):
+    subq = (
+        db.query(
+            models.TinhTrangGiaoThong.IdCamera,
+            func.max(models.TinhTrangGiaoThong.ThoiGian).label("max_time")
+        )
+        .group_by(models.TinhTrangGiaoThong.IdCamera)
+        .subquery()
+    )
+
+    query = (
+        db.query(models.TinhTrangGiaoThong)
+        .join(
+            subq,
+            (models.TinhTrangGiaoThong.IdCamera == subq.c.IdCamera) &
+            (models.TinhTrangGiaoThong.ThoiGian == subq.c.max_time)
+        )
+        .order_by(models.TinhTrangGiaoThong.IdCamera)
+    )
+    return query.all()
+
+
+
 # Get traffic status by ID
 @router.get("/get/id/{id}", response_model=schemas.TinhTrangGiaoThong)
 async def get_traffic_status_by_id(id: int, db: Session = Depends(get_db)):
@@ -171,3 +196,5 @@ async def delete_traffic_status(id: int, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+

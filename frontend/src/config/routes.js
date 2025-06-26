@@ -1,30 +1,43 @@
-import HomePage from "../components/pages/HomePage";
 import ViolationsPageAdmin from "../components/pages/admin/ViolationsPageAdmin";
 import ViolationsPageUser from "../components/pages/user/ViolationsPageUser";
 import VehiclesPage from "../components/pages/VehiclesPage";
 import PersonsPage from "../components/pages/PersonsPage";
 import TrafficPage from "../components/pages/TrafficStatusPage";
 import AnalyticsPage from "../components/pages/AnalyticsPage";
-import CameraManagePage from "../components/pages/CameraManagePage";
-import AccountManagePage from "../components/pages/AccountManagePage";
 import LoginPage from "../components/pages/LoginPage";
 import SignUpPage from "../components/pages/SignUpPage";
 import NotFoundPage from "../components/pages/NotFoundPage";
-import ShowCamera from "../components/pages/ShowCamera";
 import HomePageAdmin from "../components/pages/admin/HomePageAdmin";
 import HomePageUser from "../components/pages/user/HomePageUser";
 import PrivateRoute from "../routes/PrivateRoute";
 import UnauthorizedPage from "../components/pages/UnauthorizedPage";
 import RedirectToHome from "../routes/RedirectToHome";
-import SettingPage from "../components/pages/SettingPage";
-import SettingCameraPage from "../components/pages/SettingCameraPage";
+import SettingPage from "../components/pages/SettingAccountPage";
 import MainLayout from "../components/layout/MainLayout";
-import SettingAccountPage from "../components/pages/SettingAccountPage";
+import ShowOneCamera from "../components/pages/ShowOneCamera";
+import AccountManagePageAdmin from "../components/pages/admin/AccountManagePageAdmin";
+import CameraManagePageAdmin from "../components/pages/admin/CameraManagePageAdmin";
+import SettingCameraPageAdmin from "../components/pages/admin/SettingCameraPageAdmin";
+import SettingAccountPageAdmin from "../components/pages/admin/SettingAccountPageAdmin";
+import AccountCreatePageAdmin from "../components/pages/admin/AccountCreatePageAdmin";
+import CameraCreatePageAdmin from "../components/pages/admin/CameraCreatePageAdmin";
 
 export const appRoutes = [
   {
     path: "/",
     element: <RedirectToHome />,
+  },
+
+  {
+    path: "/admin/home",
+    label: "Trang Chủ Quản Trị",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <HomePageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
   },
 
   {
@@ -38,6 +51,91 @@ export const appRoutes = [
       </PrivateRoute>
     ),
   },
+
+  {
+    path: "/admin/accountmanage",
+    label: "Quản Trị Quản Lý Tài Khoản",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <AccountManagePageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+
+  {
+    path: "/admin/cameramanage",
+    label: "Quản Lý Camera",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <CameraManagePageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+
+  {
+    path: "/admin/camerasetting/:id",
+    label: "Cài đặt camera",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <SettingCameraPageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+
+  {
+    path: "/admin/accountsetting/:userId",
+    label: "Cài đặt tài khoản quản trị",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <SettingAccountPageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+
+  {
+    path: "/admin/accountcreate",
+    label: "Thêm Tài Khoản Mới",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <AccountCreatePageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+
+  {
+    path: "/admin/cameracreate",
+    label: "Thêm Camera Mới",
+    element: (
+      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
+        <MainLayout>
+          <CameraCreatePageAdmin />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+
+  {
+    path: "/user/home",
+    label: "Trang Chủ Người Dùng",
+    element: (
+      <PrivateRoute roles={["Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}>
+        <MainLayout>
+          <HomePageUser />
+        </MainLayout>
+      </PrivateRoute>
+    ),
+  },
+
   {
     path: "/user/violations",
     label: "Tra Cứu Vi Phạm Người Dùng",
@@ -49,6 +147,7 @@ export const appRoutes = [
       </PrivateRoute>
     ),
   },
+
   {
     path: "/vehicles",
     label: "Tìm Kiếm Phương Tiện",
@@ -62,6 +161,7 @@ export const appRoutes = [
       </PrivateRoute>
     ),
   },
+
   {
     path: "/persons",
     label: "Tìm Kiếm Người",
@@ -75,6 +175,7 @@ export const appRoutes = [
       </PrivateRoute>
     ),
   },
+
   {
     path: "/traffic",
     label: "Tình Trạng Giao Thông",
@@ -88,6 +189,7 @@ export const appRoutes = [
       </PrivateRoute>
     ),
   },
+
   {
     path: "/analytics",
     label: "Thống Kê",
@@ -101,28 +203,7 @@ export const appRoutes = [
       </PrivateRoute>
     ),
   },
-  {
-    path: "/accountmanage",
-    label: "Quản Lý Tài Khoản",
-    element: (
-      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
-        <MainLayout>
-          <AccountManagePage />
-        </MainLayout>
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/cameramanage",
-    label: "Quản Lý Camera",
-    element: (
-      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
-        <MainLayout>
-          <CameraManagePage />
-        </MainLayout>
-      </PrivateRoute>
-    ),
-  },
+
   {
     path: "/login",
     label: "Đăng Nhập",
@@ -132,6 +213,7 @@ export const appRoutes = [
       </MainLayout>
     ),
   },
+
   {
     path: "/signup",
     label: "Đăng Ký",
@@ -141,6 +223,7 @@ export const appRoutes = [
       </MainLayout>
     ),
   },
+
   {
     path: "/notfound",
     label: "Lỗi 404",
@@ -150,6 +233,7 @@ export const appRoutes = [
       </MainLayout>
     ),
   },
+
   {
     path: "/showcamera/:id",
     label: "Xem Camera",
@@ -158,33 +242,12 @@ export const appRoutes = [
         roles={["Quan Tri", "Giam Sat", "Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}
       >
         <MainLayout>
-          <ShowCamera />
+          <ShowOneCamera />
         </MainLayout>
       </PrivateRoute>
     ),
   },
-  {
-    path: "/admin/home",
-    label: "Trang Chủ Quản Trị",
-    element: (
-      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
-        <MainLayout>
-          <HomePageAdmin />
-        </MainLayout>
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/user/home",
-    label: "Trang Chủ Người Dùng",
-    element: (
-      <PrivateRoute roles={["Nguoi Dan", "Nhan Vien", "Nguoi Dung"]}>
-        <MainLayout>
-          <HomePageUser />
-        </MainLayout>
-      </PrivateRoute>
-    ),
-  },
+
   {
     path: "/unauthorized",
     label: "Không Có Quyền",
@@ -194,6 +257,7 @@ export const appRoutes = [
       </MainLayout>
     ),
   },
+
   {
     path: "*",
     label: "Không Tìm Thấy",
@@ -203,6 +267,7 @@ export const appRoutes = [
       </MainLayout>
     ),
   },
+
   {
     path: "/accountsetting",
     label: "Cài đặt tài khoản",
@@ -212,28 +277,6 @@ export const appRoutes = [
       >
         <MainLayout>
           <SettingPage />
-        </MainLayout>
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/camerasetting/:id",
-    label: "Cài đặt camera",
-    element: (
-      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
-        <MainLayout>
-          <SettingCameraPage />
-        </MainLayout>
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "admin/accountsetting/:userId",
-    label: "Cài đặt tài khoản quản trị",
-    element: (
-      <PrivateRoute roles={["Quan Tri", "Giam Sat"]}>
-        <MainLayout>
-          <SettingAccountPage />
         </MainLayout>
       </PrivateRoute>
     ),

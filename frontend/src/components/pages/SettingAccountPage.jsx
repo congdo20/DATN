@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Alert,
   CircularProgress,
@@ -11,18 +12,11 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 import "../../assets/styles/SettingPage.css";
 
-
-
-const SettingAccountPage = () => {
-  const { userId } = useParams();
-  const navigate = useNavigate();
-
-
-    const [formData, setFormData] = useState({
+const SettingPage = () => {
+  const [formData, setFormData] = useState({
     TenNguoiDung: "",
     SoDienThoai: "",
     MatKhau: "",
@@ -40,14 +34,18 @@ const SettingAccountPage = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [khuVucList, setKhuVucList] = useState([]);
-
+  
+  const { user } = useAuth();
+  const userId = user?.IdTaiKhoan;
   const vaiTroOptions = [
-  { value: "Quan Tri", label: "Quản trị viên" },
-  { value: "Giam Sat", label: "Giám sát" },
-  { value: "Nhan Vien", label: "Nhân viên" },
-  { value: "Nguoi Dan", label: "Người dân" },
-  { value: "Nguoi Dung", label: "Người dùng" },
+    { value: "Quan Tri", label: "Quản trị viên" },
+    { value: "Giam Sat", label: "Giám sát" },
+    { value: "Nhan Vien", label: "Nhân viên" },
+    { value: "Nguoi Dan", label: "Người dân" },
+    { value: "Nguoi Dung", label: "Người dùng" },
   ];
+
+  const isAdmin = user?.VaiTro === "Quan Tri" || user?.VaiTro === "Giam Sat";
 
 
   useEffect(() => {
@@ -56,7 +54,7 @@ const SettingAccountPage = () => {
         const res = await axios.get(
           `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/areas/get`
         );
-        setKhuVucList(res.data); // Giả sử trả về list [{IdKhuVuc, TenKhuVuc}]
+        setKhuVucList(res.data); 
       } catch (err) {
         console.error("Lỗi khi lấy khu vực", err);
       }
@@ -66,7 +64,7 @@ const SettingAccountPage = () => {
   }, []);
 
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
@@ -82,7 +80,7 @@ const SettingAccountPage = () => {
           GioiTinh: res.data.GioiTinh || "Nam",
           VaiTro: res.data.VaiTro || "",
           TrangThai: res.data.TrangThai || "Hoat Dong",
-          IdKhuVuc: res.data.khuvuc?.IdKhuVuc || 0, // <-- đây là điểm cập nhật
+          IdKhuVuc: res.data.khuvuc?.IdKhuVuc || 0, 
         });
       } catch (err) {
         setError("Không thể tải thông tin người dùng.");
@@ -308,7 +306,7 @@ const SettingAccountPage = () => {
                 value={formData.VaiTro || ""}
                 onChange={handleChange}
                 label="Vai trò"
-                // disabled={!isAdmin}
+                disabled={!isAdmin}
               >
                 <MenuItem value="">
                   <em>Chọn vai trò</em>
@@ -327,7 +325,7 @@ const SettingAccountPage = () => {
                 value={formData.TrangThai}
                 onChange={handleChange}
                 label="Trạng thái"
-                // disabled={!isAdmin}
+                disabled={!isAdmin}
               >
                 <MenuItem value="Hoat Dong">Hoạt động</MenuItem>
                 <MenuItem value="Khoa">Bị khóa</MenuItem>
@@ -366,4 +364,4 @@ const SettingAccountPage = () => {
   );
 };
 
-export default SettingAccountPage;
+export default SettingPage;

@@ -25,3 +25,8 @@ dist-ssr
 
 .venv
 .venv/
+
+videos/video/
+videos/video
+app/videos/video/
+/videos/video/
